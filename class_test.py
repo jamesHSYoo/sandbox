@@ -1,5 +1,4 @@
 from dateutil.parser import parse
-from datetime import datetime as dt
 
 class Animal():
     def __init__(self, species, birth_day):
@@ -10,7 +9,7 @@ class Animal():
             raise Exception("birth day type is not available.") 
         print("Success to create instance")
     def to_string(self):
-        print("Species : " + self.species + "\nBirth Day : " + self.birth_day.strftime("%Y-%m-%d"))
+        print("Species : " + self.species + "\nBirth Day : " + self.birth_day.strftime("%Y%m%d"))
     def say_species(self):
         print(self.species)
 
