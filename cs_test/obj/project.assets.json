@@ -1,11 +1,63 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "QuantLib/1.33.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/QuantLib.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/QuantLib.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libNQuantLibc.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/libNQuantLibc.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/libNQuantLibc.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-x64/native/NQuantLibc.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "QuantLib/1.33.0": {
+      "sha512": "AEi8FvEfGTJ21jt/29nRtMrM7PfOKWf2DU1eqyYBTD+9991b684gpzktefByAqqtMfD0aZgyayS32GShht/ucQ==",
+      "type": "package",
+      "path": "quantlib/1.33.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/net6.0/QuantLib.dll",
+        "lib/net7.0/QuantLib.dll",
+        "lib/net8.0/QuantLib.dll",
+        "lib/netstandard2.0/QuantLib.dll",
+        "quantlib.1.33.0.nupkg.sha512",
+        "quantlib.nuspec",
+        "runtimes/linux-x64/native/libNQuantLibc.so",
+        "runtimes/osx-arm64/native/libNQuantLibc.dylib",
+        "runtimes/osx-x64/native/libNQuantLibc.dylib",
+        "runtimes/win-x64/native/NQuantLibc.dll"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "QuantLib >= 1.33.0"
+    ]
   },
   "packageFolders": {
     "/Users/yoohyeonseung/.nuget/packages/": {}
@@ -48,6 +100,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "QuantLib": {
+            "target": "Package",
+            "version": "[1.33.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
