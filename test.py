@@ -1,14 +1,10 @@
+# 해당 소스코드 참조 홈페이지 : https://velog.io/@uni1023/M1-Mac-conda-miniforge
+
 import tensorflow.compat.v2 as tf
 import tensorflow_datasets as tfds
 
-tf.enable_v2_behavior()
-
 from tensorflow.python.framework.ops import disable_eager_execution
 disable_eager_execution()
-
-from tensorflow.python.compiler.mlcompute import mlcompute
-mlcompute.set_mlc_device(device_name='gpu')
-
 
 (ds_train, ds_test), ds_info = tfds.load(
     'mnist',
@@ -53,7 +49,7 @@ model = tf.keras.models.Sequential([
 ])
 model.compile(
     loss='sparse_categorical_crossentropy',
-    optimizer=tf.keras.optimizers.Adam(0.001),
+    optimizer=tf.keras.optimizers.legacy.SGD(0.001),
     metrics=['accuracy'],
 )
 
