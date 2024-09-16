@@ -13,7 +13,7 @@ class DB:
             client.admin.command("ping")
             print("Connected successfully")
             # other application code
-            client.close()
+            # client.close()
         except Exception as e:
             print(f"Cannot Connect to MongoDB : {e}")
             raise 
@@ -26,14 +26,15 @@ class DB:
             print(f"Cannot disconnect to MongoDB : {e}")
 
     def set_collection(self, database : str, collection: str):
-        database = self.client[f"<{database}>"]
-        collection = database[f"<{collection}>"]
+        database = self.client[database]
+        collection = database[collection]
         return collection
 
 if __name__ == '__main__':
     db = DB()
     db.connection_mongo_db()
     collection = db.set_collection("admin", "price_data")
-    results = collection.find({ "asset_code" : "KOSPI200" })
+    results = collection.find_one({ "asset_code" : "KOSPI200" })
+    print(results)
     db.disconnect_connection()
 
