@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/hs/Desktop/python_workspaces/sandbox/sandbox/cpp/CallByValueAndReference/call_by_value1/call_by_value1'
+relocations:     []
+...
