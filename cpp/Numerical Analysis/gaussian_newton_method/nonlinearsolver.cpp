@@ -77,7 +77,7 @@ void gauss_newton_parameter_solver(int nref, double *ref_x, double *ref_y, int n
         }
 
         for(i = 0 ; i < nparameter ; i++){
-            for(j = 0 ; j < nparameter ; j++){
+            for(j = 0 ; j < i ; j++){
                 smatrix[i][j] = smatrix[j][i];
             }
         }
@@ -141,6 +141,6 @@ double fx_function(int nparameter, double *parameter, double x)
     for(i = 0 ; i < nparameter ; i++){
         p[i] = parameter[i] ;
     }
-    return p[0] * x + p[1] * x * x + p[2] * exp(p[3] * x);
+    return p[0]*x + p[1]*x*x + p[2]*exp(p[3]*x);
 }
 

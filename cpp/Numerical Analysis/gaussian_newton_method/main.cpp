@@ -23,8 +23,8 @@ int main(){
     my = new double[n_data];
 
     for(i = 0; i < n_data; i++){
-        mx[i] = 1.0 + 2.0 * i;
-        my[i] = 1.561 * mx[i] - 0.725 * mx[i] * mx[i] - 0.532 * exp(-0.288 * mx[i]);
+        mx[i] = 1.0 + 0.2 * i;
+        my[i] = 1.561*mx[i] - 0.725*mx[i]*mx[i] - 0.532*exp(-0.288*mx[i]);
     }
 
     n_parameter = 4;
