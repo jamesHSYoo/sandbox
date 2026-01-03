@@ -4,15 +4,12 @@
     {
       "type": "cppbuild",
       "label": "C/C++: clang++ 활성 파일 빌드",
-      "command": "/usr/bin/clang++",
+      "command": "g++",
       "args": [
         "-std=c++17",
-        "-fcolor-diagnostics",
-        "-fansi-escape-codes",
-        "-g",
-        "${fileDirname}/**.cpp",
+        "${fileDirname}/*.cpp",
         "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
+        "${fileDirname}/bin/main_program"
       ],
       "options": {
         "cwd": "${workspaceFolder}"
