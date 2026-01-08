@@ -36,7 +36,6 @@ int main(){
     char* filename = (char *)"marketvol.txt";
 
     read_market_vol(filename, n_strike, v_strike, n_maturity, v_maturity, m_vol);
-    // TODO : vscode를 이용해서 빌드 되도록 하기(참조된 cpp까지 포함해서 빌드되도록)
-    // TODO : vscode 를 이용해서 디버딩 되도록하기(참조된 cpp까지 포함해서 디버깅 할 수 있도록)
+
     return 0;
 }
