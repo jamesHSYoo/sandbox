@@ -8,6 +8,7 @@
       "args": [
         "-std=c++17",
         "${fileDirname}/*.cpp",
+        "-g",
         "-o",
         "${fileDirname}/bin/main_program"
       ],
