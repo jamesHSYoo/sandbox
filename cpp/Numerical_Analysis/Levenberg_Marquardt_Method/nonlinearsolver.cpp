@@ -60,4 +60,104 @@ void levenberg_marquardt_parameter_solver(double S, double cc, int n_x,
     tmperror = 0.0;
     minerror = 1.0e10;
 
+    do{
+        for(i = 0 ; i < nparameter ; i++){
+            for(j = 0 ; j < nparameter ; j++){
+                smatrix[i][j] = 0.0;
+            }
+            known[i] = unknown[i] = 0.0;
+        }
+
+        for(i = 0 ; i < nparameter ; i++){
+            for(j = 0 ; j < nparameter ; j++){
+                for(m = 0 ; m < n_x ; m++){
+                    for(n = 0 ; n < n_y ; n++){
+                        xvalue = log(S * exp(cc * v_y[n]) / v_x[m]);
+                        guess[i] += h;
+                        faph = object_func(nparameter, guess, xvalue, v_y[n]);
+                        guess[i] -= 2.0 * h;
+                        famh = object_func(nparameter, guess, xvalue, v_y[n]);
+                        guess[i] += h;
+
+                        guess[j] += h;
+                        fbph = object_func(nparameter, guess, xvalue, v_y[n]);
+                        guess[j] -= 2.0 * h;
+                        fbmh = object_func(nparameter, guess, xvalue, v_y[n]);
+                        guess[j] += h;
+
+                        df1 = (faph - famh) / (2.0 * h);
+                        df2 = (fbph - fbmh) / (2.0 * h);
+                        smatrix[i][j] += df1 * df2;
+                    }
+                }
+            }
+        }
+        for(i = 0 ; i < nparameter ; i++){
+            for(j = 0 ; j < nparameter ; j++){
+                smatrix[i][j] = smatrix[j][i];
+            }
+        }
+
+        for(i = 0 ; i < nparameter ; i++){
+            smatrix[i][i] = smatrix[i][i] * (1.0 + lambda);
+            for(m = 0 ; m < n_x ; m++){
+                for(n = 0 ; n < n_y ; n++){
+                    xvalue = log(S * exp(cc * v_y[n]) / v_x[m]);
+                    guess[i] += h;
+                    faph = object_func(nparameter, guess, xvalue, v_y[n]);
+                    guess[i] -= 2.0 * h;
+                    famh = object_func(nparameter, guess, xvalue, v_y[n]);
+                    guess[i] += h;
+                    
+                    df1 = (faph - famh) / (2.0 * h);
+                    known[i] -= df1 * perr[m][n];
+                }
+            }
+        }
+
+        gaussian_elimination(smatrix, known, unknown, nparameter);
+
+        for(i = 0 ; i < nparameter ; i++){
+            tguess[i] = guess[i] + unknown[i];
+        }
+        error = 0.0;
+        for(i = 0 ; i < n_x ; i++){
+            for(j = 0 ; j < n_y ; j++){
+                xvalue = log(S * exp(cc * v_y[j]) / v_x[i]);
+                fx_value = object_func(nparameter, tguess, xvalue, v_y[j]);
+                tperr[i][j] = (fx_value - m_ref[i][j]);
+            }
+        }
+
+        if(iter != 0 && error > olderror){
+            lambda *= 10.0;
+        }else{
+            lambda /= 10.0;
+            for(i = 0 ; i < nparameter ; i++){
+                guess[i] = tguess[i];
+            }
+
+            for(i = 0 ; i < n_x ; i++){
+                for(j = 0 ; j < n_y ; j++){
+                    perr[i][j] = tperr[i][j];
+                } 
+            }
+            tmperror = olderror;
+            olderror = error;
+        }
+        if(error < minerror){
+            for(i = 0; i < nparameter ; i++){
+                minguess[i] = guess[i];
+            }
+            minerror = error;
+        }
+
+        cout << iter << " 번째" << endl; 
+        for(i = 0 ; i < nparameter ; i++){
+            cout << "p[" << i << "] : " << guess[i] << endl; 
+        }
+        cout << "error : " << minerror << endl;
+        iter++;
+    }while(error > tolerance && fabs(tmperror - error) > tolerance && iter <1000);
+
 }
