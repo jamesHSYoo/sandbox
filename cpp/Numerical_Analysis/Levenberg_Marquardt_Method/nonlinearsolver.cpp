@@ -126,6 +126,7 @@ void levenberg_marquardt_parameter_solver(double S, double cc, int n_x,
                 xvalue = log(S * exp(cc * v_y[j]) / v_x[i]);
                 fx_value = object_func(nparameter, tguess, xvalue, v_y[j]);
                 tperr[i][j] = (fx_value - m_ref[i][j]);
+                error += tperr[i][j] * tperr[i][j];
             }
         }
 
@@ -160,4 +161,45 @@ void levenberg_marquardt_parameter_solver(double S, double cc, int n_x,
         iter++;
     }while(error > tolerance && fabs(tmperror - error) > tolerance && iter <1000);
 
+    for(i = 0 ; i < nparameter ; i++){
+        parameter[i] = guess[i];
+    }
+    cout << iter << " 번 실행 후 최적해 구함" << endl;
+
+    for(i = 0 ; i < n_x ; i++){
+        delete perr[i];
+        delete tperr[i];
+    }
+
+    delete[] perr;
+    delete[] tperr;
+    for(i = 0 ; i < nparameter; i++){
+        delete smatrix[i];
+    }
+
+}
+
+double implied_volatility_function(int nparameter, double* parameter, double x, double t){
+    int i;
+    double imvol;
+    double* p;
+    p = new double[nparameter];
+    for(i = 0 ; i < nparameter ; i++){
+        p[i] = parameter[i];
+    }
+
+    imvol = p[0] + p[2] * exp(p[1] * t) + p[3]*x + p[4]*x*x + p[5]*x*x*x + p[6]*x*x*x*x;
+    delete[] p;
+    return imvol;
+}
+
+void implied_volatility(double S, double cc, int n_x, double* v_x, int n_y, double* v_y, double** mat, int nparameter, double* parameter){
+    int i, j;
+    double xvalue;
+    for(i = 0 ; i < n_x ; i++){
+        for(j = 0 ; j < n_y ; j++){
+            xvalue = log(S * exp(cc * v_y[j]) / v_x[i]);
+            mat[i][j] = implied_volatility_function(nparameter, parameter, xvalue, v_y[j]);
+        }
+    }
 }

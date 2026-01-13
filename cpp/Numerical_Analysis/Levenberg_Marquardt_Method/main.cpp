@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "data.h"
+#include "nonlinearsolver.h"
  
 int main(){
 
@@ -36,6 +37,44 @@ int main(){
     char* filename = (char *)"marketvol.txt";
 
     read_market_vol(filename, n_strike, v_strike, n_maturity, v_maturity, m_vol);
+
+    S = v_strike[2];
+    riskfreerate = 0.03;
+    dividend = 0.0;
+    carrycost = riskfreerate - dividend;
+    
+    n_parameter = 7;
+    parameter = new double[n_parameter];
+    for(i = 0 ; i < n_parameter ; i++){
+        parameter[i] = 0.1; // 파라미터 초기화
+    }
+
+    levenberg_marquardt_parameter_solver(S, carrycost, n_strike, v_strike, n_maturity, v_maturity, 
+        m_vol, n_parameter, parameter, implied_volatility_function);
+    
+    for(i = 0 ; i < n_parameter ; i++){
+        cout << "p[" << i << "] : " << parameter[i] << endl;
+    }
+    double** imvol;
+    imvol = new double*[n_strike];
+    for(i = 0 ; i < n_strike ; i++){
+        imvol[i] = new double[n_maturity];
+    }
+
+    char* savefilename = (char *)"impliedvol.txt";
+
+    implied_volatility(S, carrycost, n_strike, v_strike, n_maturity, v_maturity, imvol, n_parameter, parameter);
+
+    save_vol(savefilename, n_strike, v_strike, n_maturity, v_maturity, imvol);
+
+    for(i = 0; i < n_strike ; i++){
+        delete[] m_vol[i];
+        delete[] imvol[i];
+    }
+    delete[] parameter;
+    delete[] v_strike;
+    delete[] v_maturity;
+    delete[] m_vol;
 
     return 0;
 }
