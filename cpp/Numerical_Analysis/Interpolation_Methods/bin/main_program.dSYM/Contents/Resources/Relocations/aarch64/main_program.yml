@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/hsyoo/Desktop/multi_lang/sandbox/cpp/Numerical_Analysis/Interpolation_Methods/bin/main_program'
+relocations:     []
+...
