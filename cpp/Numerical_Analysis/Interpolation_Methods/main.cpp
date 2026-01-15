@@ -44,7 +44,7 @@ int main(){
     double rate;
 
     tenor = 915.0;
-    rate = linear_interpolation(n_days, tenors, rates, tenor);
+    rate = cubicspline_interpolation(n_days, tenors, rates, tenor);
 
     cout << "zero rate 의 선형보간 결과값 : " << rate << endl;
     
