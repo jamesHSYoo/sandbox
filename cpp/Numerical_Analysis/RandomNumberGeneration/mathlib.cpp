@@ -2,6 +2,8 @@
 
 #include "mathlib.h"
 
+#define EPS 1.2e-7
+
 using namespace std;
 
 double normdistrand(){
@@ -51,10 +53,6 @@ void normal_distribution_goodness_fit_test(unsigned long nrand, double* randnum)
 }
 
 double inverse_normal_cumulative_distribution_function(double p){
-
-    const double EPS = 1.2e-7;
-
-
     static const double a[] = { 
         -3.969683028665376e+01, 2.209460984245205e+02,
         -2.759285104469687e+02, 1.383577518672690e+02,
