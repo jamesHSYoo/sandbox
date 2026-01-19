@@ -3,6 +3,7 @@
 #include "mathlib.h"
 
 #define EPS 1.2e-7
+#define PI 3.14159265358979323846264338327950288419716939937510582097
 
 using namespace std;
 
@@ -100,5 +101,28 @@ double inverse_normal_cumulative_distribution_function(double p){
         q = p - 0.5;
         r = q * q;
         return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1);
+    }
+}
+
+double normdistrand_BoxMuller(){
+
+    double u1, u2, z1, z2;
+    static int iset = 0;
+    static double gset;
+    if(iset == 0){
+        do{
+            u1 = rand() / ((double) RAND_MAX);
+            u2 = rand() / ((double) RAND_MAX);
+            z1 = sqrt(-2 * log(u1)) * cos(2 * PI * u2);
+            z2 = sqrt(-2 * log(u1)) * sin(2 * PI * u2);
+        }
+        while(u1 == 0.0);
+        gset = z2;
+        iset = 1;
+        return z1;
+    }
+    else{
+        iset = 0;
+        return gset;
     }
 }

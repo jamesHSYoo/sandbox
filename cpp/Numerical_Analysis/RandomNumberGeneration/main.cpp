@@ -29,4 +29,15 @@ int main(){
     normal_distribution_goodness_fit_test(nrand, inverse_randnum); 
     delete[] inverse_randnum;
     cout << "=============== 표준정규누적분포의 역함수 적합성 검증 End ===============" <<endl;
+
+    cout << "=============== Box-Muller Trans 적합성 검증 Start ===============" <<endl;
+    double* box_randnum = new double[nrand];
+    for(i = 0 ; i < nrand ; i++){
+        box_randnum[i] = normdistrand_BoxMuller();
+    }
+    normal_distribution_goodness_fit_test(nrand, box_randnum); 
+    delete[] box_randnum;
+    cout << "=============== Box-Muller Trans 적합성 검증 End ===============" <<endl;
+
+
 }
