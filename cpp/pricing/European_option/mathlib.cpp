@@ -152,7 +152,7 @@ double normdistrand_BoxMuller(){
     }
 }
 
-void triangonal_elimination(double **smat, double *known, double *unknown, int n_eqs){
+void tridiagonal_elimination(double **smat, double *known, double *unknown, int n_eqs){
     double ratio, sum;
     int i, j, k;
 

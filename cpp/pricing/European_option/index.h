@@ -1,10 +1,10 @@
 class CIndex{
-    public:
+public:
     double m_spot;
     double m_vol;
     double m_dividend;
 
-    public:
+public:
     CIndex();
     CIndex(double spot, double vol, double dividend);
     ~CIndex();
