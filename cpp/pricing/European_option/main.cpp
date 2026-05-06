@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono> // 타이머 기능을 위해 필요
+
 #include "index.h"
 #include "mathlib.h"
 #include "yield.h"
@@ -39,6 +41,11 @@ int main(){
     cout<<"로그정규분포 적용 Binomial Tree에 의한 옵션가격: "<<price.m_price<<endl;
     price.trinomial_tree_european_option_price(index, yield, eoption, n_step);
     cout<<"Trinomial Tree에 의한 옵션가격: "<<price.m_price<<endl;
+    auto start = std::chrono::high_resolution_clock::now(); 
     price.implicit_fdm_european_option_price(index, yield, eoption, n_step, n_spot);
+    auto end = std::chrono::high_resolution_clock::now();
     cout<<"Implicit FDM에 의한 옵션가격: "<<price.m_price<<endl;
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Implicit FDM 실행 시간: " << duration.count() << "초" << std::endl;
+    return 0;
 }

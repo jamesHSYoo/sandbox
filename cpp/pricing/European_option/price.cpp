@@ -194,6 +194,7 @@ void CPrice::implicit_fdm_european_option_price(CIndex &index, CYield &yield, CP
     double q= index.m_dividend;
     double sigma= index.m_vol;
     double T= product.m_maturity;
+
     int i, j, t, iop;
     if((n_spot%2)==0) n_spot = n_spot+1;
     double *Sp = new double[n_spot];
@@ -229,21 +230,21 @@ void CPrice::implicit_fdm_european_option_price(CIndex &index, CYield &yield, CP
 
     double bu, bd;
     if(iop==1){// call 옵션
-    bu = Sp[0] - Sp[1]; // S가 충분히 크면 Delta = 1 이므로
-    bd = 0.0; // S가 충분히 작으면 Delta = 0
+        bu = Sp[0] - Sp[1]; // S가 충분히 크면 Delta = 1 이므로
+        bd = 0.0; // S가 충분히 작으면 Delta = 0
     }
     else{// put 옵션
-    bu = 0.0; // S가 충분히 크면 Delta = 0
-    bd = -(Sp[n_spot-2] - Sp[n_spot-1]); // S가 충분히 작으면 Delta = -1
+        bu = 0.0; // S가 충분히 크면 Delta = 0
+        bd = -(Sp[n_spot-2] - Sp[n_spot-1]); // S가 충분히 작으면 Delta = -1
     }
     // 0~n_spot-3 는 n_spot-2
 
     smatrix[0][0]= Pm;
     smatrix[0][1] = Pd;
     for(i=1; i<n_spot-3; i++){
-    smatrix[i][i-1] = Pu;
-    smatrix[i][i] = Pm;
-    smatrix[i][i+1] = Pd;
+        smatrix[i][i-1] = Pu;
+        smatrix[i][i] = Pm;
+        smatrix[i][i+1] = Pd;
     }
     smatrix[n_spot-3][n_spot-4] = Pu;
     smatrix[n_spot-3][n_spot-3] = Pm;
@@ -253,7 +254,9 @@ void CPrice::implicit_fdm_european_option_price(CIndex &index, CYield &yield, CP
     // 만기에서부터 Backward Induction 실행하여 현재가치 계산
     for(t=n_step-1; t>=0; t--){
         for(i=0; i<n_spot-2; i++){
-            for(i=0; j<n_spot-2; j++) tmp[i][j] = smatrix[i][j];
+            for(j=0; j<n_spot-2; j++){
+                tmp[i][j] = smatrix[i][j];
+            }
             known_value[i] = CV[i+1];
         }
         CV[0]= bu; // 경계조건적용
